@@ -1,2 +1,2 @@
 # ElectricSquid
-Electric giant squid neopixel strips and range finders
+Matt's Electric giant squid neopixel strips and range finders
