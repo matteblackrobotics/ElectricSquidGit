@@ -5,6 +5,8 @@
 // Pulse for engenged
 // Flash for threatened
 
+// New change here 7.25.20
+
 // Initial set up
 // -------------------------- NEO Pixel & LED Strips Hardware ------------------ //
 #include <Adafruit_NeoPixel.h>
@@ -68,7 +70,7 @@ int arraymax = slices; // length of lightval array
 // Cycles through 1 rainbow of colors before checking range again
 float bright_mult = .09; // brightness multiplier (0 to 1)
 int numCycles = 1;
-int rainbowDelay = 2; 
+int rainbowDelay = 2;
 
 // -------------------------------- PULSE ------------------------ //
 int pixelMax = 92;
@@ -87,7 +89,7 @@ int flashbrightness = 40;
 void setup()
 {
   strip1.begin(); // Initialize Strips
-  strip2.begin(); // Initialize Strips  
+  strip2.begin(); // Initialize Strips
 
   clearAll; // Clear all LED strips
 
@@ -95,7 +97,7 @@ void setup()
   strip2.show();  // Set all to 0
 
   Serial.begin(9600);  // Begin serial
-  
+
 
  // ------------------------- TWINKLE --------------------------- //
  //Set arm all array to 0
@@ -115,7 +117,7 @@ void setup()
 // ----------------------------------------- VOID LOOP ------------------------------------------- //
 void loop()
 {
-  
+
   // --------------------------------- Range Checker ------------------------------- //
   // subtract the last reading:
   readingstotalL = readingstotalL - readingsL[readIndexL];
@@ -124,7 +126,7 @@ void loop()
   anVoltLeft = analogRead(anRangePinLeft)/2;
   // Bounds detection
   if(anVoltLeft < MinDistance)
-  { 
+  {
     anVoltLeft = MinDistance;
   }
   if(anVoltLeft > MaxDistance)
@@ -139,7 +141,7 @@ void loop()
     readIndexL = readIndexL + 1;
 
     // if we're at the end of the array...
-    if (readIndexL >= numReadings) 
+    if (readIndexL >= numReadings)
     {
     // ...wrap around to the beginning:
     readIndexL = 0;
@@ -158,7 +160,7 @@ void loop()
 
   anVoltRight = analogRead(anRangePinRight)/2;
   if(anVoltRight < MinDistance)
-  { 
+  {
     anVoltRight = MinDistance;
   }
   if(anVoltRight > MaxDistance)
@@ -174,7 +176,7 @@ void loop()
     readIndexR = readIndexR + 1;
 
     // if we're at the end of the array...
-    if (readIndexR >= numReadings) 
+    if (readIndexR >= numReadings)
     {
     // ...wrap around to the beginning:
     readIndexR = 0;
@@ -203,13 +205,13 @@ void loop()
 
   // For Pulse
   if(readingsaverageL < zone2 && readingsaverageL >= zone1 || readingsaverageR < zone2 && readingsaverageR >= zone1)
-  { 
+  {
     behavior = 1;
   }
 
   // For Flash
   if(readingsaverageL < zone1 || readingsaverageR < zone1)
-  { 
+  {
     behavior = 0;
   }
 
@@ -243,7 +245,7 @@ void loop()
     // --------------------- Left Range Detection ------------------- //
     anVoltLeft = analogRead(anRangePinLeft)/2;
     if(anVoltLeft < MinDistance)
-    { 
+    {
       anVoltLeft = MinDistance;
     }
     if(anVoltLeft > MaxDistance)
@@ -258,7 +260,7 @@ void loop()
     // --------------------- Right Range Detection ------------------- //
     anVoltRight = analogRead(anRangePinRight)/2;
     if(anVoltRight < MinDistance)
-    { 
+    {
       anVoltRight = MinDistance;
     }
     if(anVoltRight > MaxDistance)
@@ -293,7 +295,7 @@ void loop()
       anVoltLeft = analogRead(anRangePinLeft)/2;
 
       if(anVoltLeft < MinDistance)
-      { 
+      {
         anVoltLeft = MinDistance;
       }
 
@@ -314,8 +316,8 @@ void loop()
       strip2.setPixelColor(i+1,brightness-delta,brightness-delta,brightness-delta);
 
       strip1.show();
-      strip2.show();   
-      
+      strip2.show();
+
       strip1.setPixelColor(i-1,ambient,ambient,ambient);
       strip1.setPixelColor(i,ambient,ambient,ambient);
       strip1.setPixelColor(i+1,ambient,ambient,ambient);
@@ -332,12 +334,12 @@ void loop()
       {
         delaytime = 0;
       }
-    } 
+    }
   } // END PULSE
 
   // ------------------------------------ FLASH ------------------------------- //
   if(behavior == 0)
-  { 
+  {
     for(int j; j<=pulses; j++)
     {
       for(int i=0; i<=pixelMax; i++)
@@ -345,32 +347,32 @@ void loop()
         strip1.setPixelColor(i,flashbrightness,flashbrightness,flashbrightness);
         strip2.setPixelColor(i,flashbrightness,flashbrightness,flashbrightness);
       }
-      strip1.show(); 
-      strip2.show(); 
+      strip1.show();
+      strip2.show();
       delay(delay1);
-        
+
       for(int i=0; i<=pixelMax; i++)
       {
         strip1.setPixelColor(i,ambient,ambient,ambient);
         strip2.setPixelColor(i,ambient,ambient,ambient);
       }
-      strip1.show(); 
-      strip2.show(); 
+      strip1.show();
+      strip2.show();
       delay(delay1);
-    }  
+    }
     delay(delay2);
 
-  } // END FLASH 
+  } // END FLASH
 
-  
+
 } // End Void Loop
-  
+
 
 // -------------------------------------------------- FUNCTIONS ---------------------------------------------- //
 // --------------------------------- LED checker function -------------------------------- //
 int ledchecker(int currentVal, int randomMax, int threshold)
 {
-  // First, handle random chance if the index value is 0 
+  // First, handle random chance if the index value is 0
   if(currentVal == 0)
   {
     // If random chance passes, return 1, move to index posiiton 1
@@ -379,7 +381,7 @@ int ledchecker(int currentVal, int randomMax, int threshold)
     {
      return 1;
     }
-    // If random chance fails, return 0 
+    // If random chance fails, return 0
     else
     {
      return 0;
@@ -387,7 +389,7 @@ int ledchecker(int currentVal, int randomMax, int threshold)
   }
   // If the index value is not 0, then increment the index
   else
-  { 
+  {
     // if the index is the last value, reset it to zero
     if(currentVal == arraymax-1)
     {
@@ -404,11 +406,11 @@ int ledchecker(int currentVal, int randomMax, int threshold)
 // ------------------------ rainbowCycle Function ------------------------------ //
 // Slightly different, this makes the rainbow equally distributed throughout
 // uint_t is a text data type
-void rainbowCycle(uint8_t wait, int numCycles, float bright_mult) 
+void rainbowCycle(uint8_t wait, int numCycles, float bright_mult)
 {
-  uint16_t i, j; // assigning data types 
+  uint16_t i, j; // assigning data types
   for(j=0; j<256*numCycles; j++) // cycles of all colors on wheel
-  { 
+  {
     for(i=0; i<strip1.numPixels(); i++) // For all the pixels in the strip
     {
       // the '&' is a bit-wise 'AND' operator
@@ -425,22 +427,22 @@ void rainbowCycle(uint8_t wait, int numCycles, float bright_mult)
     delay(wait);
   }
 }
- 
+
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos, float max_prop) 
+uint32_t Wheel(byte WheelPos, float max_prop)
 {
-  if(WheelPos < 85) 
+  if(WheelPos < 85)
   {
    // strip.Color(r,g,b)
-   return strip1.Color((int)(max_prop * WheelPos * 3), (int)(max_prop * (255 - WheelPos * 3)), 0); 
-  } 
-  else if(WheelPos < 170) 
+   return strip1.Color((int)(max_prop * WheelPos * 3), (int)(max_prop * (255 - WheelPos * 3)), 0);
+  }
+  else if(WheelPos < 170)
   {
    WheelPos -= 85;
    return strip1.Color((int)(max_prop * (255 - WheelPos * 3)), 0, (int)(max_prop * WheelPos * 3));
-  } 
-  else 
+  }
+  else
   {
    WheelPos -= 170;
    return strip1.Color(0, (int)(max_prop * WheelPos * 3), (int)(max_prop * (255 - WheelPos * 3)));
